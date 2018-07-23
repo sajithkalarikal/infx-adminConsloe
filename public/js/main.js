@@ -16,8 +16,10 @@ function saveToCSVTable() {
       })
       .then(function(res) {
         console.log(res)
+		var d = document.getElementById('messagebox');
+		d.textContent="Updates Will Reflect In 24 Hours";
 		//final popup message.
-		alert("will reflect in 24hrs")
+		//alert("will reflect in 24hrs")
 		//var popup = document.getElementById('popup');
 		      }).catch(function(err) {
         console.log(err)
