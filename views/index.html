@@ -2,80 +2,76 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Infogix Technologies Pvt. Ltd.</title>
+  <title>Infogix Inc.</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.min.css'/>
-    <link rel='stylesheet' type='text/css' href='./css/main.css'>
-  
+     <!-- <link rel='stylesheet' type='text/css' href='./css/main.css'> -->
+		  <link rel='stylesheet' type='text/css' href='./css/ie.css'>
 </head>
 <body onload='handleFileSelect()'>
-  <div class='container-fluid' style='height: 100%;'>
-       <div class='row'>
-        <div class='col-md-12 image-container'>
-          <img src='https://www.infogix.com/wp-content/themes/infogix/images/logo.png ' />
-		  <h1 style="
-    text-align:center;
-    margin-top: -20px;
-    font-size: large;
-    color: #284a8b;
-">EDM Threshold Admin Console</h1>
-        </div>
-      </div>
-      <div class='row content-container'>
-        <div class='col-md-12' style="border: 1px solid grey">
-          <div class='row header-container'>
-		              <div class='col-md-8'></div>
-					  
-					  <div id='messagebox' class="col-md-8"></div>
-					  
-            <div id='actions' class="row col-md-4 action-container"></div>
-          </div>
-          <div class="row output-container" class="row output-container" style="
-    width: 100%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-">
+	<div class='container-fluid' style='height: 100%;'>
+		<div class='row'>
+			<div class='col-md-12 image-container'>
+				<!-- <a class="logo" href="https://www.infogix.com/" rel="home"></a> -->
+				<img src='./img/logo.svg' />
+				<h1 style="
+					text-align:center;
+					margin-top: -40px;
+					font-size: large;
+					color: #284a8b;
+					font-weight:bold;
+				">EDM Threshold Admin Console</h1>
+			</div>
+		</div>
+		<div class='row content-container'  style="border: 1px solid grey">
+			<div	 class='col-md-12 header-container'>
+				<div class='col-md-8'>
+					<div class="form-group">
+						<label for="sel1" style = "color: #284a8b;">Select Report :</label>
+						<select class="form-control" id="sel1" style = " font-size: 13px; width : 40%" onchange= "selectreport(value)">							 					
+						</select>
+					</div>
+				</div>
+				<div id='actions' class="col-md-4 action-container"></div>
+			</div>
+			<output id="list" class="output-container">
+				<div id='headercontainer' class ="output-header-container"></div>	
+				<div id='bodycontainer'  class='output-body-container'></div>	 
+			</output>
+			<div class="col-md-12" style="width= 100%; display:inherit;text-align:center; color:red; font-size: 15px; margin-left:25%">
+				All threshold update(s) will reflect in the dashboard after scheduled report refresh.
+			</div>
+					
+		</div>
+				
+	</div>
 
-			<div class="col-md-3 table-header" style="background-color: #1c6efc;">Report</div>
-			  <div class="col-md-3 table-header" style="background-color: #d96671;">RED(MIN)</div>
-			 
-
-			 
-           
-
-		   <output id="list" class="col-md-12"style="padding: 0px;">
-             <!-- <div id='headercontainer' class="row col-md-12"></div> -->  
-              <div id='bodycontainer' class='row col-md-12'style="box-sizing: content-box;"></div>
-			 
-			 
-			 
-		 
-			 
-			 </output>
-          </div>
-  </div>
    <div id ='popup'style='display: none;'> 
-
-   
 		<div class="container">
 		  <!-- Modal -->
 		  <div class="modal " id="myModal" role="dialog">
 			<div class="modal-dialog">
 			
 			  <!-- Modal content-->
-			  <div class="modal-content">
-				<div class="modal-header">
-				<h4 class="modal-title" id='popup-final' >Are you sure you want to save</h4>
+			  <div class="modal-content"style ="margin-top:40%;">
+				<div class="modal-header" style="background: #e1e1e10a;border-bottom: white;">
+				<h4 class="modal-title" id='popup-final'
+				style=" 
+				padding: 25px 50px;
+				background: #e1e1e100;
+				top:200px;
+				color: black;
+				font-size: 15px;
+        " >Are you sure you want to save ?</h4>
 				  
 				  
 				</div>
 				<!--<div class="modal-body">
 				  <p>Some text in the modal.</p>
 				</div> -->
-				<div class="modal-footer" id='popup-final'>
-				<button type="button" class=" btn btn-default" data-dismiss="modal">Cancel</button>
-				  <button type="button" class="btn btn-default" data-dismiss="modal" onclick='saveToCSVTable()'>Comfirm</button>
+				<div class="modal-footer" id='popup-final' style="border: none; justify-content: center;">
+				<button type="button" class=" btn btn-default" data-dismiss="modal"style="border: 1px solid grey;  font-size: 15px">Cancel</button>
+				  <button type="button" class="btn btn-default" data-dismiss="modal" style="border: 1px solid grey;  font-size: 15px" onclick='saveToCSVTable()'>Confirm</button>
 				</div>
 			  </div>
 			  
@@ -90,6 +86,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  
+  
 <script type='text/javascript' src='./js/main.js'>
 
 
@@ -97,3 +98,12 @@
 
 </script> 
 </html>
+
+
+
+
+
+
+
+
+
