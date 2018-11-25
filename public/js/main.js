@@ -97,8 +97,7 @@ function renderDataToHtml(data, i, headerDiv, body) {
 	body.appendChild(container);
 	// to aligne all the table cell
 	var maxHeight = 0;
-	
-	$('.table-data').each(function (index, node) {
+		$('.table-data').each(function (index, node) {
 		var header = $('.table-header')[index];
 		maxHeight = header.offsetHeight;
 		maxHeight = Math.max(maxHeight, node.offsetHeight);

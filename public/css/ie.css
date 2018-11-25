@@ -28,8 +28,8 @@ html, body {
 
 .input-field:disabled {
     background: lightgrey;
-	/* width: 100%; */
-	/* height :23px; */
+	width: 100%;
+	height :23px;
 }
 
 .action-container {
@@ -63,11 +63,13 @@ html, body {
     background-color: whitesmoke;
     color: #007bff;
     border-bottom: 1px solid grey;
-	height:60px;
+	/* height:60px; */
+	width:50% ;
+
 }
 
 .output-container {
-	width:100% ;
+	width:50% ;
     /* display: -webkit-box; */
     display: flex;
     display: -ms-flexbox;	
@@ -75,12 +77,16 @@ html, body {
     -webkit-box-direction: normal;	
             flex-direction: row;
 	-ms-flex-direction: row;
-    -webkit-box-align:center;
-        -ms-flex-align:center;
-            align-items:center;
-    margin: 0 auto;
+    /* -webkit-box-align:center; */
+        /* -ms-flex-align:center; */
+            /* align-items:center; */
+    /* margin: 0 auto; */
 	font-size: 15px;
 	height: 100%;
+	margin-left:300px;
+	margin-top : 15px;
+	/* background: whitesmoke; */
+	 
 }
 
 .output-header-container{
@@ -88,7 +94,7 @@ html, body {
 	width:50%;
 		/* border:1px solid; */
 	align-items:center;
-	/* margin-left: 25%; */
+	
 /* display: inline-block; */
 }
 	
@@ -96,27 +102,30 @@ html, body {
 	display:block;
 	/* border:1px solid; */
 	display: inline-block;
-	margin-right: 100px;
-	
+	/* margin-right: 100px; */
+	width:150% ;
+	/* background: whitesmoke; */
 	
 	}
 
 .body-container {
 	/* display:block; */
 	display: -webkit-box;
+	width:100% ;
+
 	
 }
 
 .table-header {
 	/* display:block; */
-	width:50%;
+	width:100%;
 font-size: 15px;
     border: 1px solid grey;
 	-webkit-box-flex: 1;
 	    -ms-flex: 1;
 	        flex: 1;
 	padding: 0 0 px;
-	/* margin-left:150px; */
+background: whitesmoke;
 
 }
 
@@ -127,13 +136,13 @@ font-size: 15px;
 	    -ms-flex: 1;
 	        flex: 1;
 	padding: 0 5px;
-
+background: whitesmoke;
 }
 
 .table-input{
 	font-size: 12px;
     border: 1px solid grey;
-	background-color: lightgrey;
+	background-color: lightgrey;    
 }
 
 .reportname{
