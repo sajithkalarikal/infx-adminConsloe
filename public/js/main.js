@@ -78,9 +78,10 @@ function renderDataToHtml(data, i, headerDiv, body) {
 	container.className = 'body-container ';
     // adding rest of the rows 
     keys.forEach(function(key, itr) {
-		if(itr === keys.length - 4 ){
+		if(itr >= keys.length - 4 ){
 			var input = document.createElement('input');
 			input.value = data[key];
+			// input.style = "white";
 			input.disabled = isReadOnly; // input is disabled by default
 			input.id = i + '_' + key ;
 			input.className='input-field table-data';
@@ -101,8 +102,8 @@ function renderDataToHtml(data, i, headerDiv, body) {
 		var header = $('.table-header')[index];
 		maxHeight = header.offsetHeight;
 		maxHeight = Math.max(maxHeight, node.offsetHeight);
-		header.style.height = maxHeight + "px";
-		node.height = maxHeight + "px";
+		header.style.minHeight = maxHeight + "px";
+		node.style.minHeight = maxHeight + "px";
 		
 	});
 
@@ -124,27 +125,36 @@ function renderDataToHtml(data, i, headerDiv, body) {
 }
 // get file from file
 function handleFileSelect() {
-  var url = '/getDataFromFile'
-  $.get(url, {cache: 'no-store'}).then( function(res) {
-	json_object = res;
-	console.log(json_object);
-    new_object = json_object.slice(0);
 	
-	var select = document.getElementById("sel1"); 
+	if (navigator.userAgent.search('Chrome') > -1) {
+		$('head').append('<link rel="stylesheet" href="./css/main.css" type="text/css" />');
+	} else {
+		$('head').append('<link rel="stylesheet" href="./css/ie.css" type="text/css" />');
+	}
+	// $('.container-fluid').show();
+	// $('.loader_container').hide();
+	var url = '/getDataFromFile'
+	// document.write(url);
+	$.get(url).then( function(res) {
+		json_object = res;
+		console.log(json_object);
+		new_object = json_object.slice(0);
+	
+		var select = document.getElementById("sel1"); 
 		// var arryList = document.getelementbyclassName('table-data')
 		
-	var options= [] 
-	new_object.forEach(function(arrayitem){
-		options.push(arrayitem['Report']);	
-	}) 
+		var options= [] 
+		new_object.forEach(function(arrayitem){
+			options.push(arrayitem['Report']);	
+		}) 
 
-	for(var i = 0; i < options.length; i++) {
-		var opt = options[i];
-        var el = document.createElement("option");
-        el.textContent = opt;
-        el.value = i;	
-		 select.appendChild(el)
-	};
+		for(var i = 0; i < options.length; i++) {
+			var opt = options[i];
+			var el = document.createElement("option");
+			el.textContent = opt;
+			el.value = i;	
+			select.appendChild(el)
+		};
 	
     var actionList = ['Edit', 'Save'];
     var action = document.getElementById('actions');

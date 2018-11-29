@@ -20,7 +20,7 @@ html, body {
 
 .content-container {
     margin: 0 10px;
-    height: 100%;
+    height: calc(100% - 70px);
 	white-space: none;
 }
 
@@ -66,57 +66,29 @@ html, body {
 
 .output-container {
 	width:100% ;
-    display: -webkit-box;
     display: flex;
-    display: -ms-flexbox;	
-    -webkit-box-orient: horizontal;	
-    -webkit-box-direction: normal;	
-            flex-direction: row;
-	-ms-flex-direction: row;
-    -webkit-box-align:center;
-        -ms-flex-align:center;
-            align-items:center;
-    margin: 0 auto;
+    flex-direction: row;
 	font-size: 15px;
-	height: 100%;
+	height: calc(100% - 60px);
+	padding-bottom: 20px;
 }
 
 .output-header-container{
-	display: -webkit-box;
-display: -ms-flexbox;
-display: flex;
--webkit-box-orient: vertical;
--webkit-box-direction: normal;
-    -ms-flex-direction: column;
-        flex-direction: column; 
-text-align:left; 
-background: whitesmoke; 
-min-width:200px; 
--webkit-box-align: auto; 
-    -ms-flex-align: auto; 
-        align-items: auto;
-font-size: 15px;
+	display: flex;
+    flex-direction: column; 
+	text-align:left; 
+	min-width:200px; 
+	font-size: 15px;
+	margin-left: 25%;
 }
 	
 .output-body-container{
--webkit-box-flex: 1;
-		    -ms-flex: 1;
-		        flex: 1;
-	display: -webkit-box;
+	flex: 1;
 	display: flex; 
-	display: -ms-flexbox;
-	-webkit-box-orient: horizontal;
-	-webkit-box-direction: normal;
-	    -ms-flex-direction: row;
-	        flex-direction: row;
+	flex-direction: row;
 	text-align:left;
-	background: whitesmoke;
-	min-width: 200px;
-	-webkit-box-align: auto;
-	    -ms-flex-align: auto;
-	        align-items: auto;
 	font-size: 15px;
-	}
+}
 
 .body-container {
 	max-width: 500px;
@@ -133,26 +105,22 @@ font-size: 15px;
 	text-align:left;
 	font-size: 12px;
 	font-weight:normal;
+	background-color:whitesmoke;
 }
 
 .table-header {
- font-size: 15px;
-    font-weight: bold;
-    border: 1px solid grey;
-	-webkit-box-flex: 1;
-	    -ms-flex: 1;
-	        flex: 1;
+	border: 1px solid grey;
+	flex: 1;
 	padding: 0 5px;
+	background-color:whitesmoke;
 }
 
 .table-data{
-  font-size: 15px;
+	font-size: 15px;
     border: 1px solid grey;
-	-webkit-box-flex: 1;
-	    -ms-flex: 1;
-	        flex: 1;
+	flex: 1;
 	padding: 0 5px;
-
+    /* background-color:whitesmoke; */
 }
 
 .table-input{
@@ -182,7 +150,11 @@ font-size: 15px;
 .backgroundcolor4{
 	background-color:#ff8484;
 	    border: 1px solid grey
-}	 
+}	
+
+.message {
+	text-align:center; color:red; font-size: 15px;
+}	
 
  
 	 
