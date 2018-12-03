@@ -125,17 +125,18 @@ function renderDataToHtml(data, i, headerDiv, body) {
 }
 // get file from file
 function handleFileSelect() {
-	
 	if (navigator.userAgent.search('Chrome') > -1) {
 		$('head').append('<link rel="stylesheet" href="./css/main.css" type="text/css" />');
 	} else {
 		$('head').append('<link rel="stylesheet" href="./css/ie.css" type="text/css" />');
+		
 	}
+		
 	// $('.container-fluid').show();
 	// $('.loader_container').hide();
 	var url = '/getDataFromFile'
 	// document.write(url);
-	$.get(url).then( function(res) {
+	$.get(url, {cache: 'no-store',}).then( function(res) {
 		json_object = res;
 		console.log(json_object);
 		new_object = json_object.slice(0);
