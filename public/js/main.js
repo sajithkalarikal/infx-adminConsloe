@@ -117,7 +117,14 @@ function renderDataToHtml(data, i, headerDiv, body) {
         var id = e.target.id;
 
         var path = id.split('_');
-        new_object[path[0]][path[1]] = value;
+		var reportIndex = -1;
+		for (var i = 0; i < new_object.length; ++i) {
+			if (new_object[i]['Report ID'] == path[0]) {
+				reportIndex = i;
+				break;
+			}
+		}
+		new_object[reportIndex][path[1]] = value;
         console.log(new_object);
      };
   }
@@ -131,7 +138,7 @@ function handleFileSelect() {
 		$('head').append('<link rel="stylesheet" href="./css/ie.css" type="text/css" />');
 		
 	}
-		
+	
 	// $('.container-fluid').show();
 	// $('.loader_container').hide();
 	var url = '/getDataFromFile'
@@ -144,18 +151,20 @@ function handleFileSelect() {
 		var select = document.getElementById("sel1"); 
 		// var arryList = document.getelementbyclassName('table-data')
 		
-		var options= [] 
+		var options= {}; 
 		new_object.forEach(function(arrayitem){
-			options.push(arrayitem['Report']);	
+			var id = arrayitem['Report ID']
+			options[id]= arrayitem['Report'];	
 		}) 
 
-		for(var i = 0; i < options.length; i++) {
-			var opt = options[i];
+		Object.keys(options).forEach(function(key, index) {
+			var value = options[key] 
 			var el = document.createElement("option");
-			el.textContent = opt;
-			el.value = i;	
+			el.textContent = value;
+			el.value = key;	
+			el.id = key;
 			select.appendChild(el)
-		};
+		});
 	
     var actionList = ['Edit', 'Save'];
     var action = document.getElementById('actions');
@@ -179,7 +188,9 @@ function handleFileSelect() {
     renderDataToHtml(json_object[0], 0, header, body);
     document.getElementById('Edit').addEventListener('click', toggleInput, false);
     document.getElementById('Save').addEventListener('click', toggleInput, false);
-
+	
+	var path = window.location.pathname.replace(/\//g, '')
+	selectreport(path);
 	
   }).catch(function(err) {
     console.log(err)
@@ -189,15 +200,16 @@ function handleFileSelect() {
 function selectreport(value){
 	var header = document.getElementById('headercontainer');
     var body = document.getElementById('bodycontainer');
-
+	var options = document.getElementById(value);
+	options.selected = "selected";
 	while (body.hasChildNodes()) {
 		body.removeChild(body.lastChild);
 	}
 	while (header.hasChildNodes()) {
 		header.removeChild(header.lastChild);
 	}
-	var rep = json_object[value];
-	renderDataToHtml(rep, value, header, body);
+	var rep = json_object.filter(function(obj,index){return obj['Report ID'] == value   });
+	renderDataToHtml(rep[0], value, header, body);
 	
 }
 

@@ -21,7 +21,17 @@ app.use(bodyParser.json())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get('/', function (req, res) {
+
+app.get('/RPT1054', function (req, res) {
+  res.render('index.html')
+});
+app.get('/RPT1044', function (req, res) {
+  res.render('index.html')
+});
+app.get('/RPT1081', function (req, res) {
+  res.render('index.html')
+});
+app.get('/RPT1080', function (req, res) {
   res.render('index.html')
 });
 
