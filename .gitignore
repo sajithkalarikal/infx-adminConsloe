@@ -1,2 +1,25 @@
 node_modules/
 package-lock.json
+
+
+https://www.google.co.in/search?q=how+to+install+apache+tomcat+server+in+windows+7+64+bit+step+by+step&rlz=1C1CHBF_enIN778IN779&oq=how+to+install+apache+tomcat+server+in+windows+7&aqs=chrome.1.69i59j0l5.7093j1j4&sourceid=chrome&ie=UTF-8#kpvalbx=1
+
+
+node js server
+https://nodejs.org/en/docs/guides/anatomy-of-an-http-transaction/
+
+not passible in tomcat
+https://www.quora.com/Is-there-a-way-to-run-a-Node-js-application-within-a-Tomcat-server
+
+
+nginix install
+npm install -g pm2
+
+start the node
+pm2 start app.js
+
+to restart when server is down
+pm2 startup systemd
+
+
+https://209.196.214.111/

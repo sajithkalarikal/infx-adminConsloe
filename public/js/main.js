@@ -1,31 +1,35 @@
 var isReadOnly = true;
 var new_object = [];
+var json_object = [];
+// var tableDescription = {
+  // 'RPT1081 CNA   Threshold Alerts': 'Description One',
+  // 'RPT1054 Sirius Double Sold': 'Description two',
+  // 'RPT1044 Scems Double Sold Validation': 'Description 3',
+  // 'RPT1084 CNA   Threshold Alerts': 'Description 4'
+// }
+
+
+
+
 function saveToCSVTable() {
-// on confirm Save
-     var url = '/updateXML';
-     var body = {
-        data: new_object
-     };
-     fetch(url, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      })
-      .then(function(res) {
-        console.log(res)
-		var d = document.getElementById('messagebox');
-		d.textContent="Updates Will Reflect In 24 Hours";
-		setTimeout(function(){ d.textContent=""; }, 4000);
-		//final popup message.
-		//alert("will reflect in 24hrs")
-		//var popup = document.getElementById('popup');
-		      }).catch(function(err) {
-        console.log(err)
-      })
+  // on confirm Save
+  var url = '/updateXML';
+
+  $.post(url, {data: JSON.stringify(new_object)}, function(res) {
+    console.log(res)
+
+	
+	//var d = document.getElementById('messagebox');
+//    d.textContent="Note: Change's Will Reflect In The Dashboard After The Control Trigger's";
+	
+    // message should disappear after 5 seconds
+   // setTimeout(function(){ d.textContent=""; },300000);
+	
+     })
 }
+
+
+
 
 
 function  toggleInput(event) {
@@ -36,7 +40,7 @@ function  toggleInput(event) {
     inputs[item].disabled = isReadOnly;    
   }
   if (isReadOnly) {
-	// open popup
+	  // open popup
 		var popup = document.getElementById('popup');
 		console.log(popup)
 		popup.style.display = 'block';
@@ -44,63 +48,124 @@ function  toggleInput(event) {
   }
 }
 
-function renderDataToHtml(jsonObject, headerDiv, body) {
-  var header = [];
-  jsonObject.forEach(function(data, i) {
-    var container = document.createElement('div');
-    container.className = 'col-md-12 data-container';
-    var div = document.createElement('div');
-    div.className = 'col-md-3 table-data';
-    var input = document.createElement('input');
+function renderDataToHtml(data, i, headerDiv, body) {
+	var header = [];
+	var keys = Object.keys(data);
+	
+	// adding data to table header
+	keys.forEach(function(key) {
+		if (header.indexOf(key) === -1 ) {
+			header.push(key) 
+		}       
+	})
+	
+	
+	header.forEach(function(title) {
+		var div = document.createElement('div');
+		div.textContent = title;
+		div.className = ' table-header';
+		
+		headerDiv.appendChild(div);
+	})
+	
+	for(var a = 1; a <= 4; a++) {	
+		var x= headerDiv.children.length
+		headerDiv.children[x-a].className = 'backgroundcolor' + a + ' table-header' 
+	}
 
-    var keys = Object.keys(data);
-    keys.forEach(function(key) {
-      if (header.indexOf(key) === 1) { header.push(key) }       
-    })
+
+	var container = document.createElement('div');
+	container.className = 'body-container ';
+    // adding rest of the rows 
     keys.forEach(function(key, itr) {
-      if ( itr === 0 ) {
-        div.textContent = data[key];
-        container.appendChild(div);
-      } else {
-        input.value = data[key];
-        input.disabled = isReadOnly;
-        input.id = i + '_' + key;
-        input.className='col-md-3 input-field table-data';
-        container.appendChild(input);
-      }
-      body.appendChild(container);
-      
+		if(itr >= keys.length - 4 ){
+			var input = document.createElement('input');
+			input.value = data[key];
+			// input.style = "white";
+			input.disabled = isReadOnly; // input is disabled by default
+			input.id = i + '_' + key ;
+			input.className='input-field table-data';
+			container.appendChild(input);
+		} else {      
+			var content = data[key].trim();
+			var div = document.createElement('div');
+			div.className = 'table-data ';
+			div.textContent = content;
+			//div.title = tableDescription[content]; // show description of the Threshold data
+			container.appendChild(div); 
+        }
     })
-  })
-  var inputs = document.getElementsByClassName('input-field');
-  for(var x = 0; x < inputs.length; x++) {
+	body.appendChild(container);
+	// to aligne all the table cell
+	var maxHeight = 0;
+		$('.table-data').each(function (index, node) {
+		var header = $('.table-header')[index];
+		maxHeight = header.offsetHeight;
+		maxHeight = Math.max(maxHeight, node.offsetHeight);
+		header.style.minHeight = maxHeight + "px";
+		node.style.minHeight = maxHeight + "px";
+		
+	});
+
+
+	
+	var inputs = document.getElementsByClassName('input-field');
+	// when input is not disabled - call function when editing the input column
+	for(var x = 0; x < inputs.length; x++) {
      inputs[x].onchange = function(e) {
         var value = e.target.value;
         var id = e.target.id;
 
         var path = id.split('_');
-        new_object[path[0]][path[1]] = value;
+		var reportIndex = -1;
+		for (var i = 0; i < new_object.length; ++i) {
+			if (new_object[i]['Report ID'] == path[0]) {
+				reportIndex = i;
+				break;
+			}
+		}
+		new_object[reportIndex][path[1]] = value;
         console.log(new_object);
      };
   }
-
-   header.forEach(function(title) {
-    var div = document.createElement('div');
-      div.textContent = title;
-      div.className = 'col-md-3 table-header';
-      headerDiv.appendChild(div);
-    })
-
+	
 }
-
+// get file from file
 function handleFileSelect() {
-  var url = '/getDataFromFile'
-  fetch(url, {cache: 'no-store'}).then(async function(res) {
-    console.log(res)
-    var response = res.json();
-			    var json_object = await response;
+	if (navigator.userAgent.search('Chrome') > -1) {
+		$('head').append('<link rel="stylesheet" href="./css/main.css" type="text/css" />');
+	} else {
+		$('head').append('<link rel="stylesheet" href="./css/ie.css" type="text/css" />');
+		
+	}
+	
+	// $('.container-fluid').show();
+	// $('.loader_container').hide();
+	var url = '/getDataFromFile'
+	// document.write(url);
+	$.get(url, {cache: 'no-store',}).then( function(res) {
+		json_object = res;
 		console.log(json_object);
-    new_object = json_object.slice(0);
+		new_object = json_object.slice(0);
+	
+		var select = document.getElementById("sel1"); 
+		// var arryList = document.getelementbyclassName('table-data')
+		
+		var options= {}; 
+		new_object.forEach(function(arrayitem){
+			var id = arrayitem['Report ID']
+			options[id]= arrayitem['Report'];	
+		}) 
+
+		Object.keys(options).forEach(function(key, index) {
+			var value = options[key] 
+			var el = document.createElement("option");
+			el.textContent = value;
+			el.value = key;	
+			el.id = key;
+			select.appendChild(el)
+		});
+	
     var actionList = ['Edit', 'Save'];
     var action = document.getElementById('actions');
 
@@ -120,17 +185,35 @@ function handleFileSelect() {
     header = document.getElementById('headercontainer');
     body = document.getElementById('bodycontainer');
 
-    renderDataToHtml(json_object, header, body);
+    renderDataToHtml(json_object[0], 0, header, body);
     document.getElementById('Edit').addEventListener('click', toggleInput, false);
     document.getElementById('Save').addEventListener('click', toggleInput, false);
-
+	
+	var path = window.location.pathname.replace(/\//g, '')
+	selectreport(path);
+	
   }).catch(function(err) {
     console.log(err)
   })
-  };
-  
-  
-  
+};
+  //drop down to slect one report at a time
+function selectreport(value){
+	var header = document.getElementById('headercontainer');
+    var body = document.getElementById('bodycontainer');
+	var options = document.getElementById(value);
+	options.selected = "selected";
+	while (body.hasChildNodes()) {
+		body.removeChild(body.lastChild);
+	}
+	while (header.hasChildNodes()) {
+		header.removeChild(header.lastChild);
+	}
+	var rep = json_object.filter(function(obj,index){return obj['Report ID'] == value   });
+	renderDataToHtml(rep[0], value, header, body);
+	
+}
+
+	
   
   
   

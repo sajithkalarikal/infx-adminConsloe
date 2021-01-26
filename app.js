@@ -7,7 +7,7 @@ var app = express();
 var path = require('path');
 var bodyParser = require('body-parser');
 
-var filename = 'C:/Users/skalarikal/Desktop/prtotype final/Threshold_Alerts_Ref_Table.csv'; //file path//
+var filename = 'C:/Users/skalarikal/Desktop/prtotype final/Threshold_Alerts_Ref_Table.csv';//file path//
 //var filename = 'C:/Users/skalarikal/Desktop/prtotype final/Threshold_Alerts_Ref_Table_1.xls'; //file path//
 var json_object = [];
 
@@ -21,37 +21,61 @@ app.use(bodyParser.json())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.get('/', function (req, res) {
+
+app.get('/RPT1054', function (req, res) {
+  res.render('index.html')
+});
+app.get('/RPT1044', function (req, res) {
+  res.render('index.html')
+});
+app.get('/RPT1081', function (req, res) {
+  res.render('index.html')
+});
+app.get('/RPT1080', function (req, res) {
   res.render('index.html')
 });
 
 app.post('/updateXML', function (req, res) {
-  // console.log(req);
-  console.log(req.body);
-  new_object = req.body.data;
+  
+  console.log("post..............",req.body.data);
+  new_object = JSON.parse(req.body.data);
   console.log(typeof new_object);
  // var xls = json2xls(new_object);//
  const parser = new Json2csvParser({});
- const xls = parser.parse(new_object);
-  fs.writeFileSync(filename, xls, 'binary');
+ const csv = parser.parse(new_object);
+  fs.writeFileSync(filename, csv, 'binary');
   
   res.send(200);
 });
 
+function ReadFilefromCSV (){ 
+ const workbook = XLSX.readFile(filename);
+  const sheet_name_list = workbook.SheetNames;
+	
+  json_object = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
+	
+};
+
 app.get('/getDataFromFile', function (req, res) {
-	console.log("abncderfhjl;kasjdflkaj==================================",json_object);
+	ReadFilefromCSV ();
   res.send(200, json_object);
+  console.log("get........",json_object)
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(3000, function() {
-  console.log('Trying to read a xls file on port 3000...');
-  
-  const workbook = XLSX.readFile(filename);
-  const sheet_name_list = workbook.SheetNames;
+/* 
+var http = require("http")
+var port = 3000;
 
-  json_object = XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]])
-  console.log(json_object);
+http.createServer(function(req,resp){resp.writehead(200,{"content-type":"text/html"});
+resp.end()};) */
+
+app.listen(3000, function() {
+	ReadFilefromCSV ();
+  console.log('Trying to read a xls file on port 3000...', filename);
+  
+
+  console.log("applisen............",json_object);
 });
 
